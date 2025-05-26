@@ -130,7 +130,7 @@ const Expenses = () => {
               <input
                 type="text"
                 placeholder="Expense Title"
-                className="input input-bordered input-sm md:input-md w-full"
+                className="input input-bordered input-sm md:input-md w-full bg-white dark:bg-gray-900 text-gray-900 dark:text-white"
                 value={newExpense.title}
                 onChange={(e) => setNewExpense({ ...newExpense, title: e.target.value })}
               />
@@ -139,14 +139,14 @@ const Expenses = () => {
               <input
                 type="number"
                 placeholder="Amount"
-                className="input input-bordered input-sm md:input-md w-full"
+                className="input input-bordered input-sm md:input-md w-full bg-white dark:bg-gray-900 text-gray-900 dark:text-white"
                 value={newExpense.amount}
                 onChange={(e) => setNewExpense({ ...newExpense, amount: e.target.value })}
               />
             </div>
             <div className="col-span-2 md:col-span-1">
               <select
-                className="select select-bordered select-sm md:select-md w-full"
+                className="select select-bordered select-sm md:select-md w-full bg-white dark:bg-gray-900 text-gray-900 dark:text-white"
                 value={newExpense.category}
                 onChange={(e) => setNewExpense({ ...newExpense, category: e.target.value })}
               >
@@ -172,7 +172,7 @@ const Expenses = () => {
                 <input
                   type="number"
                   placeholder="Base Amount (for percentage calculation)"
-                  className="input input-bordered input-sm md:input-md w-full"
+                  className="input input-bordered input-sm md:input-md w-full bg-white dark:bg-gray-900 text-gray-900 dark:text-white"
                   value={newExpense.baseAmount}
                   onChange={(e) => setNewExpense({ ...newExpense, baseAmount: e.target.value })}
                   min="0"
@@ -264,7 +264,7 @@ const Expenses = () => {
               <div>
                 <input
                   type="text"
-                  className="input input-bordered input-sm md:input-md w-full"
+                  className="input input-bordered input-sm md:input-md w-full bg-white dark:bg-gray-900 text-gray-900 dark:text-white"
                   value={editingExpense.title}
                   onChange={(e) => setEditingExpense({ ...editingExpense, title: e.target.value })}
                   placeholder="Title"
@@ -273,7 +273,7 @@ const Expenses = () => {
               <div>
                 <input
                   type="number"
-                  className="input input-bordered input-sm md:input-md w-full"
+                  className="input input-bordered input-sm md:input-md w-full bg-white dark:bg-gray-900 text-gray-900 dark:text-white"
                   value={editingExpense.amount}
                   onChange={(e) => setEditingExpense({ ...editingExpense, amount: parseFloat(e.target.value) || 0 })}
                   min="0"
@@ -283,7 +283,7 @@ const Expenses = () => {
               </div>
               <div>
                 <select
-                  className="select select-bordered select-sm md:select-md w-full"
+                  className="select select-bordered select-sm md:select-md w-full bg-white dark:bg-gray-900 text-gray-900 dark:text-white"
                   value={editingExpense.category}
                   onChange={(e) => setEditingExpense({ ...editingExpense, category: e.target.value })}
                 >
@@ -308,7 +308,7 @@ const Expenses = () => {
                 <div>
                   <input
                     type="number"
-                    className="input input-bordered input-sm md:input-md w-full"
+                    className="input input-bordered input-sm md:input-md w-full bg-white dark:bg-gray-900 text-gray-900 dark:text-white"
                     value={editingExpense.baseAmount || ''}
                     onChange={(e) => setEditingExpense({ ...editingExpense, baseAmount: parseFloat(e.target.value) || 0 })}
                     min="0"

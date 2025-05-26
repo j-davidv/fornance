@@ -63,7 +63,7 @@ const Settings = () => {
             <div className="flex flex-col space-y-2">
               <label className="text-foreground">Default Currency</label>
               <select
-                className="select select-bordered w-full"
+                className="select select-bordered w-full bg-white dark:bg-gray-900 text-gray-900 dark:text-white"
                 value={cashBalance.currency}
                 onChange={handleCurrencyChange}
                 disabled={isLoading}
