@@ -130,66 +130,40 @@ export const useStore = create<Store>()(
       },
 
       addExpense: (expense) =>
-        set((state) => {
-          // Calculate the actual amount to deduct
-          const amountToDeduct = expense.isPercentage 
-            ? (expense.baseAmount || 0) * (expense.amount / 100)
-            : expense.amount;
-
-          // Calculate new balance
-          const newBalance = state.cashBalance.amount - amountToDeduct;
-
-          // Create new expense object
-          const newExpense = {
-            ...expense,
-            id: crypto.randomUUID(),
-            date: new Date().toISOString(),
-          };
-
-          return {
-            expenses: [newExpense, ...state.expenses],
-            cashBalance: {
-              ...state.cashBalance,
-              amount: newBalance,
+        set((state) => ({
+          expenses: [
+            {
+              ...expense,
+              id: crypto.randomUUID(),
+              date: new Date().toISOString(),
             },
-            activityHistory: [
-              {
-                id: crypto.randomUUID(),
-                type: 'add',
-                description: `Added expense: ${expense.title} - ${
-                  expense.isPercentage 
-                    ? `${expense.amount}% of ${state.cashBalance.currency} ${expense.baseAmount}`
-                    : `${state.cashBalance.currency} ${expense.amount}`
-                }`,
-                timestamp: new Date().toISOString(),
-                amount: expense.amount,
-                currency: expense.isPercentage ? undefined : state.cashBalance.currency,
-                isPercentage: expense.isPercentage,
-              },
-              ...state.activityHistory,
-            ],
-          };
-        }),
+            ...state.expenses,
+          ],
+          activityHistory: [
+            {
+              id: crypto.randomUUID(),
+              type: 'add',
+              description: `Added expense: ${expense.title} - ${
+                expense.isPercentage 
+                  ? `${expense.amount}% of ${state.cashBalance.currency} ${expense.baseAmount}`
+                  : `${state.cashBalance.currency} ${expense.amount}`
+              }`,
+              timestamp: new Date().toISOString(),
+              amount: expense.amount,
+              currency: expense.isPercentage ? undefined : state.cashBalance.currency,
+              isPercentage: expense.isPercentage,
+            },
+            ...state.activityHistory,
+          ],
+        })),
 
       removeExpense: (id) =>
         set((state) => {
           const expense = state.expenses.find((e) => e.id === id);
           if (!expense) return state;
 
-          // Calculate the amount to add back
-          const amountToAdd = expense.isPercentage
-            ? (expense.baseAmount || 0) * (expense.amount / 100)
-            : expense.amount;
-
-          // Calculate new balance
-          const newBalance = state.cashBalance.amount + amountToAdd;
-
           return {
             expenses: state.expenses.filter((e) => e.id !== id),
-            cashBalance: {
-              ...state.cashBalance,
-              amount: newBalance,
-            },
             activityHistory: [
               {
                 id: crypto.randomUUID(),
@@ -214,20 +188,6 @@ export const useStore = create<Store>()(
           const oldExpense = state.expenses.find((e) => e.id === id);
           if (!oldExpense) return state;
 
-          // Calculate the old amount that was deducted
-          const oldAmount = oldExpense.isPercentage
-            ? (oldExpense.baseAmount || 0) * (oldExpense.amount / 100)
-            : oldExpense.amount;
-
-          // Calculate the new amount to deduct
-          const newAmount = updatedExpense.isPercentage
-            ? (updatedExpense.baseAmount || 0) * (updatedExpense.amount / 100)
-            : updatedExpense.amount;
-
-          // Calculate the difference and adjust balance
-          const balanceAdjustment = oldAmount - newAmount;
-          const newBalance = state.cashBalance.amount + balanceAdjustment;
-
           return {
             expenses: state.expenses.map((expense) =>
               expense.id === id
@@ -237,10 +197,6 @@ export const useStore = create<Store>()(
                   }
                 : expense
             ),
-            cashBalance: {
-              ...state.cashBalance,
-              amount: newBalance,
-            },
             activityHistory: [
               {
                 id: crypto.randomUUID(),

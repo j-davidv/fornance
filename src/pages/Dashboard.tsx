@@ -52,7 +52,7 @@ const Dashboard = () => {
     <div className="container mx-auto px-3 py-4 md:px-4 md:py-6 max-w-[1400px] mt-12">
       <h1 className="text-xl md:text-2xl font-bold text-foreground mb-3 md:mb-4">Overview</h1>
 
-      <div className="grid grid-cols-1 gap-3 md:grid-cols-2 md:gap-4">
+      <div className="grid grid-cols-1 gap-3 md:grid-cols-3 md:gap-4">
         {/* Balance Card */}
         <div className="glass-morphism p-4 md:p-5">
           <div className="flex items-start justify-between mb-1.5">
@@ -130,9 +130,23 @@ const Dashboard = () => {
           <p className="text-xs text-muted-foreground mt-1.5">Total spent this period</p>
         </div>
 
+        {/* Remaining Balance Card */}
+        <div className="glass-morphism p-4 md:p-5">
+          <div className="flex items-start justify-between mb-1.5">
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <BanknotesIcon className="w-4 h-4 text-primary" />
+              <span>Remaining Balance</span>
+            </div>
+          </div>
+          <div className="text-2xl md:text-3xl font-bold text-primary mt-1.5">
+            {cashBalance.currency} {(cashBalance.amount - totalExpenses).toLocaleString()}
+          </div>
+          <p className="text-xs text-muted-foreground mt-1.5">After all expenses</p>
+        </div>
+
         {/* Recent Expenses */}
         {expenses.length > 0 && (
-          <div className="glass-morphism p-4 md:p-5 md:col-span-2">
+          <div className="glass-morphism p-4 md:p-5 md:col-span-3">
             <div className="flex items-center justify-between mb-3">
               <h2 className="text-base font-semibold text-foreground">Recent Expenses</h2>
               <Link 
@@ -172,7 +186,7 @@ const Dashboard = () => {
         )}
 
         {/* Activity History */}
-        <div className="glass-morphism p-4 md:p-5 md:col-span-2">
+        <div className="glass-morphism p-4 md:p-5 md:col-span-3">
           <ActivityHistory compact />
         </div>
       </div>
