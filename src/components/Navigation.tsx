@@ -22,13 +22,21 @@ const Navigation = () => {
 
   return (
     <>
-      {/* Hamburger Menu Button - Always visible */}
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="fixed top-3 left-4 z-50 bg-primary/90 backdrop-blur-sm text-white rounded-lg p-1.5 shadow-lg hover:bg-primary/80 transition-all duration-300"
-      >
-        <Bars3Icon className="w-5 h-5" />
-      </button>
+      {/* Hamburger Menu Button and App Name - Always visible */}
+      <div className="fixed top-3 left-4 z-50 flex items-center gap-3">
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className="bg-primary/90 backdrop-blur-sm text-white rounded-lg p-1.5 shadow-lg hover:bg-primary/80 transition-all duration-300"
+        >
+          <Bars3Icon className="w-5 h-5" />
+        </button>
+        <Link 
+          to="/" 
+          className="text-foreground font-bold text-lg hover:text-primary transition-colors duration-300"
+        >
+          Fornance
+        </Link>
+      </div>
 
       {/* Navigation Panel - Shows when menu is open */}
       <div 
