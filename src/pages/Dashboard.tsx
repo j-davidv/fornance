@@ -5,18 +5,15 @@ import {
   ArrowTrendingUpIcon, 
   ArrowTrendingDownIcon,
   BanknotesIcon,
-  ArrowUpIcon,
-  UserGroupIcon,
   PencilSquareIcon
 } from '@heroicons/react/24/outline';
 import toast from 'react-hot-toast';
 import ActivityHistory from '../components/ActivityHistory';
 
 const Dashboard = () => {
-  const { cashBalance, expenses, setCashBalance, updateCurrency, isLoading } = useStore();
+  const { cashBalance, expenses, setCashBalance } = useStore();
   const [isEditing, setIsEditing] = useState(false);
   const [editAmount, setEditAmount] = useState(cashBalance.amount.toString());
-  const [editCurrency, setEditCurrency] = useState(cashBalance.currency);
 
   const totalExpenses = expenses.reduce((acc, expense) => {
     if (expense.isPercentage) {
@@ -25,10 +22,10 @@ const Dashboard = () => {
     return acc + expense.amount;
   }, 0);
 
-  const handleCurrencyChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const newCurrency = e.target.value;
-    setEditCurrency(newCurrency);
-  };
+  // Update local state when cashBalance changes
+  useEffect(() => {
+    setEditAmount(cashBalance.amount.toString());
+  }, [cashBalance]);
 
   const handleSaveBalance = async () => {
     const amount = parseFloat(editAmount);
@@ -40,7 +37,7 @@ const Dashboard = () => {
     try {
       setCashBalance({
         amount,
-        currency: cashBalance.currency, // Always use the current currency
+        currency: cashBalance.currency,
       });
 
       setIsEditing(false);
@@ -50,22 +47,6 @@ const Dashboard = () => {
       console.error('Error updating balance:', error);
     }
   };
-
-  const currencies = [
-    { code: 'NTD', name: 'New Taiwan Dollar' },
-    { code: 'USD', name: 'US Dollar' },
-    { code: 'EUR', name: 'Euro' },
-    { code: 'JPY', name: 'Japanese Yen' },
-    { code: 'GBP', name: 'British Pound' },
-    { code: 'PHP', name: 'Philippine Peso' },
-    { code: 'CNY', name: 'Chinese Yuan' },
-  ];
-
-  // Update local state when cashBalance changes
-  useEffect(() => {
-    setEditAmount(cashBalance.amount.toString());
-    setEditCurrency(cashBalance.currency);
-  }, [cashBalance]);
 
   return (
     <div className="container mx-auto px-2 py-3 md:px-4 md:py-4 max-w-[1400px]">
