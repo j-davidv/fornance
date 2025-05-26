@@ -78,7 +78,7 @@ const Dashboard = () => {
                   type="number"
                   value={editAmount}
                   onChange={(e) => setEditAmount(e.target.value)}
-                  className="input input-bordered input-sm w-full"
+                  className="input input-bordered input-sm w-full bg-white dark:bg-gray-900 text-gray-900 dark:text-white"
                   placeholder="Enter amount"
                 />
               </div>
