@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { useEffect } from 'react';
 import { useStore } from './store/useStore';
@@ -13,31 +13,41 @@ const App = () => {
 
   // Apply dark mode class on mount and when isDarkMode changes
   useEffect(() => {
+    // Force immediate application of dark mode
     if (isDarkMode) {
       document.documentElement.classList.add('dark');
     } else {
       document.documentElement.classList.remove('dark');
     }
+
+    // Update theme color meta tag
+    const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+    if (metaThemeColor) {
+      metaThemeColor.setAttribute('content', isDarkMode ? '#1a1b1e' : '#ffffff');
+    }
   }, [isDarkMode]);
 
   return (
     <Router>
-      <div className="min-h-screen bg-background text-foreground">
+      <div className={`min-h-screen transition-colors duration-200 ${isDarkMode ? 'dark bg-gray-900 text-white' : 'bg-white text-gray-900'}`}>
         <Navigation />
-        <div className="fixed top-0 left-0 right-0 h-12 bg-card/50 backdrop-blur-sm z-40 flex items-center">
-          <Link to="/" className="pl-14 font-bold text-lg tracking-wide leading-none pt-1 text-foreground/90 drop-shadow-sm hover:text-foreground/100 transition-colors">
-            Fornance
-          </Link>
-        </div>
-        <main className="min-h-screen p-4 pt-16">
+        <main className="container mx-auto px-4 py-8">
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/expenses" element={<Expenses />} />
-            <Route path="/report" element={<Report />} />
             <Route path="/settings" element={<Settings />} />
+            <Route path="/report" element={<Report />} />
           </Routes>
         </main>
-        <Toaster position="bottom-right" />
+        <Toaster 
+          position="bottom-right"
+          toastOptions={{
+            style: {
+              background: isDarkMode ? '#374151' : '#ffffff',
+              color: isDarkMode ? '#ffffff' : '#1f2937',
+            },
+          }}
+        />
       </div>
     </Router>
   );

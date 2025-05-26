@@ -1,9 +1,9 @@
-// Get API key from environment variable or fallback to default for development
-const API_KEY = import.meta.env.VITE_EXCHANGE_RATE_API_KEY || '86a49c75fe584cbee4b3e787';
+// Get API key from environment variable
+const API_KEY = import.meta.env.VITE_EXCHANGE_RATE_API_KEY;
 
-// Warn if using fallback API key
-if (!import.meta.env.VITE_EXCHANGE_RATE_API_KEY) {
-  console.warn('Using fallback API key. Please set VITE_EXCHANGE_RATE_API_KEY in your .env file for production use.');
+// Validate API key
+if (!API_KEY) {
+  console.error('Exchange Rate API key is missing. Please add VITE_EXCHANGE_RATE_API_KEY to your .env file.');
 }
 
 const BASE_URL = 'https://v6.exchangerate-api.com/v6';
@@ -39,6 +39,10 @@ const getStandardCurrencyCode = (currency: string): string => {
 
 export const fetchExchangeRates = async (baseCurrency: string, retries = 3): Promise<ExchangeRateResponse> => {
   try {
+    if (!API_KEY) {
+      throw new Error('Exchange Rate API key is not configured. Please add VITE_EXCHANGE_RATE_API_KEY to your .env file.');
+    }
+
     const standardCode = getStandardCurrencyCode(baseCurrency);
     const response = await fetch(`${BASE_URL}/${API_KEY}/latest/${standardCode}`);
     
@@ -47,16 +51,25 @@ export const fetchExchangeRates = async (baseCurrency: string, retries = 3): Pro
       
       // Handle specific API errors
       if (response.status === 429 && retries > 0) {
-        // Rate limit hit - wait and retry
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        // Rate limit hit - wait and retry with exponential backoff
+        await new Promise(resolve => setTimeout(resolve, Math.pow(2, 3 - retries) * 1000));
         return fetchExchangeRates(baseCurrency, retries - 1);
       }
+
+      if (response.status === 401 || response.status === 403) {
+        throw new Error('Invalid API key. Please check your ExchangeRate-API key configuration.');
+      }
       
-      throw new Error(errorData.error || 'Failed to fetch exchange rates');
+      throw new Error(errorData.error || `Failed to fetch exchange rates: ${response.statusText}`);
     }
     
     const data = await response.json() as ExchangeRateResponse;
     
+    // Validate response data
+    if (!data.conversion_rates || Object.keys(data.conversion_rates).length === 0) {
+      throw new Error('Invalid response from exchange rate API: No conversion rates found');
+    }
+
     // Map back to custom currency codes if needed
     const mappedRates: { [key: string]: number } = {};
     Object.entries(data.conversion_rates).forEach(([code, rate]) => {
@@ -70,7 +83,10 @@ export const fetchExchangeRates = async (baseCurrency: string, retries = 3): Pro
     };
   } catch (error) {
     console.error('Error fetching exchange rates:', error);
-    throw error;
+    if (error instanceof Error) {
+      throw new Error(`Currency conversion failed: ${error.message}`);
+    }
+    throw new Error('An unexpected error occurred while fetching exchange rates');
   }
 };
 
