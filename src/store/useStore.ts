@@ -215,7 +215,7 @@ export const useStore = create<Store>()(
       toggleDarkMode: () =>
         set((state) => {
           const newDarkMode = !state.isDarkMode;
-          setDarkModeClass(newDarkMode); // Apply dark mode class
+          setDarkModeClass(newDarkMode);
           return {
             isDarkMode: newDarkMode,
           };
