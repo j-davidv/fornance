@@ -222,7 +222,7 @@ export const useStore = create<Store>()(
         }),
 
       clearHistory: () =>
-        set((state) => ({
+        set(() => ({
           activityHistory: [],
         })),
 
