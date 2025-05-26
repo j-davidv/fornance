@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { 
   HomeIcon, 
@@ -11,6 +11,7 @@ import {
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
   const location = useLocation();
 
   const navItems = [
@@ -20,10 +21,29 @@ const Navigation = () => {
     { path: '/settings', icon: Cog6ToothIcon, label: 'Settings' },
   ];
 
+  // Handle scroll events
+  useEffect(() => {
+    const controlNavbar = () => {
+      if (window.scrollY > 20) { // Hide after scrolling 20px
+        setIsVisible(false);
+      } else { // Show only at the top
+        setIsVisible(true);
+      }
+    };
+
+    window.addEventListener('scroll', controlNavbar);
+    return () => {
+      window.removeEventListener('scroll', controlNavbar);
+    };
+  }, []);
+
   return (
     <>
-      {/* Hamburger Menu Button and App Name - Always visible */}
-      <div className="fixed top-3 left-4 z-50 flex items-center gap-3">
+      {/* Hamburger Menu Button and App Name - Only visible at top */}
+      <div 
+        className={`fixed top-3 left-4 z-50 flex items-center gap-3 transition-transform duration-300
+          ${isVisible ? 'translate-y-0' : '-translate-y-20'}`}
+      >
         <button
           onClick={() => setIsOpen(!isOpen)}
           className="bg-primary/90 backdrop-blur-sm text-white rounded-lg p-1.5 shadow-lg hover:bg-primary/80 transition-all duration-300"

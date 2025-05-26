@@ -49,14 +49,14 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="container mx-auto px-2 py-3 md:px-4 md:py-4 max-w-[1400px]">
-      <h1 className="text-xl md:text-2xl font-bold text-foreground mb-4">Overview</h1>
+    <div className="container mx-auto px-3 py-4 md:px-4 md:py-6 max-w-[1400px] mt-12">
+      <h1 className="text-xl md:text-2xl font-bold text-foreground mb-3 md:mb-4">Overview</h1>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
+      <div className="grid grid-cols-1 gap-3 md:grid-cols-2 md:gap-4">
         {/* Balance Card */}
-        <div className="glass-morphism p-3 md:p-4">
-          <div className="flex items-start justify-between">
-            <div className="flex items-center gap-2 text-sm text-muted-foreground mb-1">
+        <div className="glass-morphism p-4 md:p-5">
+          <div className="flex items-start justify-between mb-1.5">
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <BanknotesIcon className="w-4 h-4 text-success" />
               <span>Current Balance</span>
               {!isEditing && (
@@ -72,7 +72,7 @@ const Dashboard = () => {
           </div>
 
           {isEditing ? (
-            <div className="space-y-2">
+            <div className="space-y-3">
               <div className="flex gap-2">
                 <input
                   type="number"
@@ -102,18 +102,18 @@ const Dashboard = () => {
             </div>
           ) : (
             <div>
-              <div className="text-2xl md:text-3xl font-bold text-success mt-1">
+              <div className="text-2xl md:text-3xl font-bold text-success mt-1.5">
                 {cashBalance.currency} {cashBalance.amount.toLocaleString()}
               </div>
-              <p className="text-xs text-muted-foreground mt-1">Available to spend</p>
+              <p className="text-xs text-muted-foreground mt-1.5">Available to spend</p>
             </div>
           )}
         </div>
 
         {/* Total Expenses Card */}
-        <div className="glass-morphism p-3 md:p-4">
-          <div className="flex items-start justify-between">
-            <div className="flex items-center gap-2 text-sm text-muted-foreground mb-1">
+        <div className="glass-morphism p-4 md:p-5">
+          <div className="flex items-start justify-between mb-1.5">
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <ArrowTrendingDownIcon className="w-4 h-4 text-error" />
               <span>Total Expenses</span>
             </div>
@@ -124,17 +124,17 @@ const Dashboard = () => {
               View all
             </Link>
           </div>
-          <div className="text-2xl md:text-3xl font-bold text-error mt-1">
+          <div className="text-2xl md:text-3xl font-bold text-error mt-1.5">
             {cashBalance.currency} {totalExpenses.toLocaleString()}
           </div>
-          <p className="text-xs text-muted-foreground mt-1">Total spent this period</p>
+          <p className="text-xs text-muted-foreground mt-1.5">Total spent this period</p>
         </div>
 
         {/* Recent Expenses */}
         {expenses.length > 0 && (
-          <div className="glass-morphism p-3 md:p-4 md:col-span-2">
-            <div className="flex items-center justify-between mb-2">
-              <h2 className="text-sm font-semibold text-foreground">Recent Expenses</h2>
+          <div className="glass-morphism p-4 md:p-5 md:col-span-2">
+            <div className="flex items-center justify-between mb-3">
+              <h2 className="text-base font-semibold text-foreground">Recent Expenses</h2>
               <Link 
                 to="/expenses" 
                 className="text-xs text-primary-600 hover:text-primary-700 font-medium transition-colors"
@@ -142,20 +142,20 @@ const Dashboard = () => {
                 View all
               </Link>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+            <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2 lg:grid-cols-3">
               {expenses.slice(0, 6).map((expense) => (
-                <div key={expense.id} className="glass-morphism p-2 rounded-lg">
-                  <div className="flex justify-between items-start gap-2">
+                <div key={expense.id} className="glass-morphism p-3 rounded-lg">
+                  <div className="flex justify-between items-start gap-3">
                     <div>
                       <p className="font-medium text-sm text-foreground">{expense.title}</p>
-                      <p className="text-xs text-muted-foreground">{expense.category}</p>
+                      <p className="text-xs text-muted-foreground mt-0.5">{expense.category}</p>
                     </div>
                     <div className="text-right shrink-0">
                       <p className="text-sm font-semibold text-foreground">
                         {expense.isPercentage ? (
                           <>
                             {expense.amount}%
-                            <span className="text-xs text-success block">
+                            <span className="text-xs text-success block mt-0.5">
                               ≈ {cashBalance.currency} {((expense.baseAmount || 0) * expense.amount / 100).toLocaleString()}
                             </span>
                           </>
@@ -172,7 +172,7 @@ const Dashboard = () => {
         )}
 
         {/* Activity History */}
-        <div className="glass-morphism p-3 md:p-4 md:col-span-2">
+        <div className="glass-morphism p-4 md:p-5 md:col-span-2">
           <ActivityHistory compact />
         </div>
       </div>
