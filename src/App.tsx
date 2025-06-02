@@ -6,6 +6,7 @@ import Dashboard from './pages/Dashboard';
 import Expenses from './pages/Expenses';
 import Settings from './pages/Settings';
 import Report from './pages/Report';
+import Budget from './pages/Budget';
 import Navigation from './components/Navigation';
 
 const App = () => {
@@ -35,6 +36,7 @@ const App = () => {
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/expenses" element={<Expenses />} />
+            <Route path="/budget" element={<Budget />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/report" element={<Report />} />
           </Routes>

@@ -6,6 +6,7 @@ import {
   Cog6ToothIcon,
   Bars3Icon,
   DocumentChartBarIcon,
+  ChartPieIcon,
   XMarkIcon
 } from '@heroicons/react/24/outline';
 
@@ -17,6 +18,7 @@ const Navigation = () => {
   const navItems = [
     { path: '/', icon: HomeIcon, label: 'Dashboard' },
     { path: '/expenses', icon: BanknotesIcon, label: 'Expenses' },
+    { path: '/budget', icon: ChartPieIcon, label: 'Budget' },
     { path: '/report', icon: DocumentChartBarIcon, label: 'Report' },
     { path: '/settings', icon: Cog6ToothIcon, label: 'Settings' },
   ];
